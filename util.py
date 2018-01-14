@@ -1,6 +1,6 @@
 from . import config
 import requests
-import juspay
+import juspayp3
 from .JuspayException import *
 
 
@@ -22,9 +22,9 @@ def get_arg(kwargs, param):
 
 def request(method, url, parameters):
     try:
-        if juspay.environment == 'production':
+        if juspayp3.environment == 'production':
             server = 'https://api.juspay.in'
-        elif juspay.environment == 'sandbox':
+        elif juspayp3.environment == 'sandbox':
             server = 'https://sandbox.juspay.in'
         else:
             raise Exception("environment variable can only be 'production' or 'sandbox'")
@@ -32,9 +32,9 @@ def request(method, url, parameters):
         header ={'version':config.api_version,
                  'User-Agent':'Python SDK'}
         if method.upper() == 'GET':
-            response = requests.get(server + url, headers=header, params=parameters, auth=(juspay.api_key, ''))
+            response = requests.get(server + url, headers=header, params=parameters, auth=(juspayp3.api_key, ''))
         else:
-            response = requests.post(server + url, headers=header, data=parameters, auth=(juspay.api_key, ''))
+            response = requests.post(server + url, headers=header, data=parameters, auth=(juspayp3.api_key, ''))
 
         # Report error if response is not 200 ("OK")
         if response.status_code >= 200 and response.status_code < 300:
